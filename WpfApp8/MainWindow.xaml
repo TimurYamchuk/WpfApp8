@@ -1,0 +1,100 @@
+﻿<Window x:Class="WpfApp8.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:WpfApp8.ViewModels"
+        Title="Color Viewer" Height="389" Width="525">
+    <Window.DataContext>
+        <vm:ColorViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style x:Key="SliderStyle" TargetType="Slider">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="25"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Ползунки и кнопка добавления -->
+        <StackPanel Orientation="Vertical" Margin="0,10,0,10">
+            <!-- Alpha -->
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox IsChecked="{Binding IsAlphaEnabled}" VerticalAlignment="Center" Grid.Column="0"/>
+                <TextBlock Text="Alpha:" VerticalAlignment="Center" Grid.Column="1" Margin="5,0"/>
+                <Slider Minimum="0" Maximum="255" Value="{Binding Alpha}" IsEnabled="{Binding IsAlphaEnabled}" Style="{StaticResource SliderStyle}" Grid.Column="1"/>
+                <TextBlock Text="{Binding Alpha}" VerticalAlignment="Center" Grid.Column="2"/>
+            </Grid>
+
+            <!-- Red -->
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox IsChecked="{Binding IsRedEnabled}" VerticalAlignment="Center" Grid.Column="0"/>
+                <TextBlock Text="Red:" VerticalAlignment="Center" Grid.Column="1" Margin="5,0"/>
+                <Slider Minimum="0" Maximum="255" Value="{Binding Red}" IsEnabled="{Binding IsRedEnabled}" Style="{StaticResource SliderStyle}" Grid.Column="1"/>
+                <TextBlock Text="{Binding Red}" VerticalAlignment="Center" Grid.Column="2"/>
+            </Grid>
+
+            <!-- Green -->
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox IsChecked="{Binding IsGreenEnabled}" VerticalAlignment="Center" Grid.Column="0"/>
+                <TextBlock Text="Green:" VerticalAlignment="Center" Grid.Column="1" Margin="5,0"/>
+                <Slider Minimum="0" Maximum="255" Value="{Binding Green}" IsEnabled="{Binding IsGreenEnabled}" Style="{StaticResource SliderStyle}" Grid.Column="1"/>
+                <TextBlock Text="{Binding Green}" VerticalAlignment="Center" Grid.Column="2"/>
+            </Grid>
+
+            <!-- Blue -->
+            <Grid Margin="0,5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox IsChecked="{Binding IsBlueEnabled}" VerticalAlignment="Center" Grid.Column="0"/>
+                <TextBlock Text="Blue:" VerticalAlignment="Center" Grid.Column="1" Margin="5,0"/>
+                <Slider Minimum="0" Maximum="255" Value="{Binding Blue}" IsEnabled="{Binding IsBlueEnabled}" Style="{StaticResource SliderStyle}" Grid.Column="1"/>
+                <TextBlock Text="{Binding Blue}" VerticalAlignment="Center" Grid.Column="2"/>
+            </Grid>
+
+            <!-- Цвет -->
+            <Rectangle Height="34" Fill="{Binding CurrentColor}" Margin="0,10" Width="488"/>
+            <Button Content="Add" Command="{Binding AddCommand}" IsEnabled="{Binding IsAddEnabled}" Width="100"/>
+
+            <!-- Кнопка добавления -->
+        </StackPanel>
+
+        <!-- Список цветов -->
+        <ListBox Grid.Row="1" ItemsSource="{Binding Colors}" SelectedItem="{Binding SelectedColor}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Margin="5">
+                        <Rectangle Width="50" Height="20" Fill="{Binding Color}" Margin="0,0,10,0"/>
+                        <TextBlock Text="{Binding HexValue}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <Button Content="Delete" Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=ListBox}}" 
+                                CommandParameter="{Binding}" Width="60"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Window>
